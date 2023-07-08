@@ -13,7 +13,7 @@ Olá invocador, conheça o **configManager**, um aplicativo rodando em node.js c
 
 **Abaixar prioridade:** Altere a prioridade do client para cima ou para baixo, não sei por que, mas isso melhora FPS para certos pc's.
 
-**Reiniciar Explorer:** Sabe quando sua barra de taréfas trava por cima dos aplicativos em tela cheia? use essa opção (em testes.)
+**Reiniciar Explorer:** Sabe quando sua barra de taréfas trava por cima dos aplicativos em tela cheia? use essa opção (Ainda não implementado)
 
 ## INSTALAÇÃO:
 (Caso você não tenha o node.js instalado, acesse [aqui](https://nodejs.org/en) e instale a versão LTS)
