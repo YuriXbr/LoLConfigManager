@@ -21,11 +21,13 @@ Olá invocador, conheça o **configManager**, um aplicativo rodando em node.js c
 ## INSTALAÇÃO:
 (Caso você não tenha o node.js instalado, acesse [aqui](https://nodejs.org/en) e instale a versão LTS)
 
-Primeiro tente abrir o dependencies.bat e depois que tudo for instalado, abra o start.bat, caso não funcione, siga os passos a baixo:
-
 
 1. Clique no botão verde "code" e aperte em "download ZIP".
 2. Extraia em uma pasta.
+
+Primeiro tente abrir o dependencies.bat e depois que tudo for instalado, abra o start.bat, caso não funcione, siga os passos a baixo:
+
+
 3. Então abra o CMD e no local do arquivo.
 3.1. Abra a pasta, e pegue o caminho para ela.
 3.2. Escreva no CMD "cd [cole o caminho da pasta].
