@@ -6,7 +6,7 @@
   "scripts": {
     "test": "node ."
   },
-  "author": "Your Best Friend",
+  "author": "Yurão",
   "license": "ISC",
   "dependencies": {
     "child_process": "^1.0.2",
