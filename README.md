@@ -30,7 +30,7 @@ Primeiro tente abrir o dependencies.bat e depois que tudo for instalado, abra o 
 
 3. Então abra o CMD e no local do arquivo.
 4. Abra a pasta, e pegue o caminho para ela.
-5. Escreva no CMD "cd [cole o caminho da pasta].
+5. Escreva no CMD "cd (cole o caminho da pasta).
 6. Escreva "npm i" e espere as dependencias serem baixadas.
 
  Pronto, basta executar pelo start.bat.
@@ -41,7 +41,7 @@ Primeiro tente abrir o dependencies.bat e depois que tudo for instalado, abra o 
 
 ## OBSERVAÇÔES:
 
-**Duvidas ou problemas?** Me contate via discord (*yuri.js*), twitter (*@incertamentyuri*) ou diretamente pelo GitHub.
+**Duvidas ou problemas?** Me contate via discord (*yuri.js*), twitter (*@incertamentyuri*) ou diretamente pelo GitHub no issues.
 
 ***Este aplicativo é exclusivo para Windows***
 
