@@ -29,9 +29,9 @@ Primeiro tente abrir o dependencies.bat e depois que tudo for instalado, abra o 
 
 
 3. Então abra o CMD e no local do arquivo.
-3.1. Abra a pasta, e pegue o caminho para ela.
-3.2. Escreva no CMD "cd [cole o caminho da pasta].
-4. Escreva "npm i" e espere as dependencias serem baixadas.
+4. Abra a pasta, e pegue o caminho para ela.
+5. Escreva no CMD "cd [cole o caminho da pasta].
+6. Escreva "npm i" e espere as dependencias serem baixadas.
 
  Pronto, basta executar pelo start.bat.
 
