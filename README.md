@@ -3,6 +3,8 @@
 Olá invocador, conheça o **configManager**, um aplicativo rodando em node.js com o objetivo de te ajudar a corrigir **problemas de interface e salvar tempo**. 
 (Precisa do node.js instalado, exclusivo para Windows)
 
+![image](https://github.com/YuriXbr/LoLConfigManager/assets/56856513/84daafff-9a60-4023-998e-fd978a639f53)
+
 
 # FUNCIONALIDADES:
 **Trava de configurações:** Trava a configuração do lol para quando você trocar entre as contas, o lol não resete ou altere suas configurações.
