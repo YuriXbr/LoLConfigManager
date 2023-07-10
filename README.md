@@ -53,3 +53,13 @@ Olá invocador, conheça o **configManager**, um aplicativo rodando em node.js c
 ## LICENÇA & DIREITOS AUTORAIS:
 
 Este programa pode ser modificado livremente, mas solicito humildemente  para que mantenham os créditos originais. Não me responsabilizo por versões modificadas.
+
+
+
+## SOLUÇÃO DE PROBLEMAS:
+# Caso o aplcativo abra e feche instantaneamente, siga o seguinte:
+
+1. Abra o CMD como administrador
+2. Leve ele ao caminho da pasta, como feito no momento da instalação, usando o "CD (caminho da pasta)"
+3. Escreva "node ." Lembre-se de tirar as aspas, mas manter o . atente-se também que tem um espaço entre o texto e o ponto.
+4. Pegue o Log de erro, e informe para mim por qualquer um dos meios de contato.
