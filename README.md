@@ -25,10 +25,12 @@ Olá invocador, conheça o **configManager**, um aplicativo rodando em node.js c
 3. Extraia em uma pasta, fora do Downloads de preferencia.
 4. Abra o CMD como administrador
 5. Abra a pasta onde você instalou o programa, e pegue o caminho para ela no cabeçalho, como se fosse o link do navegador
+
 ![image](https://github.com/YuriXbr/LoLConfigManager/assets/56856513/5f451f6c-eb86-4a4c-8ac5-0a109a35bb6f)
 
 6. Escreva no CMD "cd (cole o caminho da pasta)".
 7. Escreva "npm i" e espere as dependencias serem baixadas.
+
 ![image](https://github.com/YuriXbr/LoLConfigManager/assets/56856513/b1631f75-466d-416d-ac7d-4bc9afcfdf00)
 
 
