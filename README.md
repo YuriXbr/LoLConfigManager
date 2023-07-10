@@ -19,19 +19,14 @@ Olá invocador, conheça o **configManager**, um aplicativo rodando em node.js c
 **Reiniciar Explorer:** Sabe quando sua barra de taréfas trava por cima dos aplicativos em tela cheia? use essa opção (Ainda não implementado)
 
 ## INSTALAÇÃO:
-(Caso você não tenha o node.js instalado, acesse [aqui](https://nodejs.org/en) e instale a versão LTS)
+1. Caso você não tenha o node.js instalado, acesse [aqui](https://nodejs.org/en) e instale a versão LTS
 
-
-1. Clique no botão verde "code" e aperte em "download ZIP".
-2. Extraia em uma pasta.
-
-Primeiro tente abrir o dependencies.bat e depois que tudo for instalado, abra o start.bat, caso não funcione, siga os passos a baixo:
-
-
-3. Então abra o CMD e no local do arquivo.
-4. Abra a pasta, e pegue o caminho para ela.
-5. Escreva no CMD "cd (cole o caminho da pasta)".
-6. Escreva "npm i" e espere as dependencias serem baixadas.
+2. Clique no botão verde "code" e aperte em "download ZIP".
+3. Extraia em uma pasta, fora do Downloads de preferencia.
+4. Abra o CMD como administrador
+5. Abra a pasta onde você instalou o programa, e pegue o caminho para ela no cabeçalho, como se fosse o link do navegador
+6. Escreva no CMD "cd (cole o caminho da pasta)".
+7. Escreva "npm i" e espere as dependencias serem baixadas.
 
  Pronto, basta executar pelo start.bat.
 
