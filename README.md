@@ -22,6 +22,9 @@ Olá invocador, conheça o **configManager**, um aplicativo rodando em node.js c
 1. Caso você não tenha o node.js instalado, acesse [aqui](https://nodejs.org/en) e instale a versão LTS
 
 2. Clique no botão verde "code" e aperte em "download ZIP".
+
+![image](https://github.com/YuriXbr/LoLConfigManager/assets/56856513/765470fd-0252-4e8a-acfa-784288861e8f)
+
 3. Extraia em uma pasta, fora do Downloads de preferencia.
 4. Abra o CMD como administrador
 5. Abra a pasta onde você instalou o programa, e pegue o caminho para ela no cabeçalho, como se fosse o link do navegador
@@ -31,7 +34,8 @@ Olá invocador, conheça o **configManager**, um aplicativo rodando em node.js c
 6. Escreva no CMD "cd (cole o caminho da pasta)".
 7. Escreva "npm i" e espere as dependencias serem baixadas.
 
-![image](https://github.com/YuriXbr/LoLConfigManager/assets/56856513/b1631f75-466d-416d-ac7d-4bc9afcfdf00)
+![image](https://github.com/YuriXbr/LoLConfigManager/assets/56856513/170cf6c4-30a6-49d9-897d-0c0e2e3ba7d5)
+
 
 
  Pronto, basta executar pelo start.bat.
