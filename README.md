@@ -19,7 +19,7 @@ Olá invocador, conheça o **configManager**, um aplicativo rodando em node.js c
 **Reiniciar Explorer:** Sabe quando sua barra de taréfas trava por cima dos aplicativos em tela cheia? use essa opção (Ainda não implementado)
 
 ## INSTALAÇÃO:
-1. Caso você não tenha o node.js instalado, acesse [aqui](https://nodejs.org/en) e instale a versão LTS
+1. Caso você não tenha o node.js instalado, acesse [aqui](https://nodejs.org/pt-br) e instale a versão LTS
 
 2. Clique na ultima versão, na aba de Releases a direita
 
