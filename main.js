@@ -51,7 +51,7 @@ if (!fs.existsSync(infoFilePath) || fs.readFileSync(infoFilePath, 'utf8').trim()
 
 // Carrega as informações do arquivo info.json
 let info = JSON.parse(fs.readFileSync(infoFilePath, 'utf8'));
-console.log('Informações carregadas:', info);
+log.writeSilent('Informações carregadas' + JSON.stringify(info))
 
 // Cria a interface de leitura
 const rl = readline.createInterface({

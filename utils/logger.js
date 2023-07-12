@@ -2,8 +2,8 @@ const c = require('./colorcodes.js');
 
 const fs = require('fs');
 var today = new Date();
-var data = today.getDate() + '/' + (today.getMonth() + 1) + '/' + today.getFullYear() + ' ' + today.getHours() + ':' + today.getMinutes() + ':' + today.getSeconds();
-var filename = `${today.getDay()}` + '-' + `${today.getMonth()}` + ` ${today.getHours()}`+ '-'+ `${today.getMinutes()} log`
+var data = today.getDate() + '-' + (today.getMonth() + 1) + '-' + today.getFullYear() + '   ' + today.getHours() + '-' + today.getMinutes() + '-' + today.getSeconds();
+var filename = `${data} log`
 
 
 
