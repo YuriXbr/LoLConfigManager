@@ -1,4 +1,7 @@
 @echo off
 title CONFIG MANAGER
 node .
-pause
+cls
+echo.
+echo Programa encerrado, aperte qualquer botão para sair
+pause > nul
