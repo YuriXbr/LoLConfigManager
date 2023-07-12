@@ -26,6 +26,10 @@ Olá invocador, conheça o **configManager**, um aplicativo rodando em node.js c
 ![image](https://github.com/YuriXbr/LoLConfigManager/assets/56856513/765470fd-0252-4e8a-acfa-784288861e8f)
 
 3. Extraia em uma pasta, fora do Downloads de preferencia.
+
+Agora tente executar o arquivo dependencies.bat, e então abrir o programa pelo start.bat, se tudo funcionar, perfeito. Caso não funcione, siga os passos a baixo
+
+
 4. Abra o CMD como administrador
 5. Abra a pasta onde você instalou o programa, e pegue o caminho para ela no cabeçalho, como se fosse o link do navegador
 
@@ -39,6 +43,10 @@ Olá invocador, conheça o **configManager**, um aplicativo rodando em node.js c
 
 
  Pronto, basta executar pelo start.bat.
+
+## REPORTAR PROBLEMAS:
+
+1. Abra a pasta de logs, e envie o conteudo dele para mim pelo issues no aqui mesmo, ou pelo twitter/discord a baixo.
 
 ## CAUSA BAN?
 
