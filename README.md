@@ -5,7 +5,7 @@ Olá invocador, conheça o **configManager**, um aplicativo rodando em node.js c
 
 ![image](https://github.com/YuriXbr/LoLConfigManager/assets/56856513/a67fe062-7e19-428e-b381-87aaf40716e4)
 
-
+<br>
 
 # FUNCIONALIDADES:
 **Trava de configurações:** Trava a configuração do lol para quando você trocar entre as contas, o lol não resete ou altere suas configurações.
@@ -21,36 +21,52 @@ Olá invocador, conheça o **configManager**, um aplicativo rodando em node.js c
 ## INSTALAÇÃO:
 1. Caso você não tenha o node.js instalado, acesse [aqui](https://nodejs.org/en) e instale a versão LTS
 
-2. Clique no botão verde "code" e aperte em "download ZIP".
+2. Clique na ultima versão, na aba de Releases a direita
 
-![image](https://github.com/YuriXbr/LoLConfigManager/assets/56856513/765470fd-0252-4e8a-acfa-784288861e8f)
+![image](https://github.com/YuriXbr/LoLConfigManager/assets/56856513/fc15bc01-27ad-4c4c-b961-be0291625e54)
 
-3. Extraia em uma pasta, fora do Downloads de preferencia.
+2.1. então baixe o asset que diz LolConfigManagerVX.X.X.zip
 
-Agora tente executar o arquivo dependencies.bat, e então abrir o programa pelo start.bat, se tudo funcionar, perfeito. Caso não funcione, siga os passos a baixo
+![image](https://github.com/YuriXbr/LoLConfigManager/assets/56856513/c62d4931-c948-48ec-b128-9790811077b5)
 
+<br>
 
-4. Abra o CMD como administrador
-5. Abra a pasta onde você instalou o programa, e pegue o caminho para ela no cabeçalho, como se fosse o link do navegador
+3. Extraia em uma pasta, **fora do Downloads ou de qualquer pasta do sistema de preferencia.**
+<br>
+
+⚜ Agora tente executar o arquivo dependencies.bat, e então abrir o programa pelo start.bat, se tudo funcionar, perfeito. Caso não funcione, siga os passos a baixo:
+
+<br>
+<br>
+
+1. Abra o CMD como administrador
+2. Abra a pasta onde você instalou o programa, e pegue o caminho para ela no cabeçalho, como se fosse o link do navegador
 
 ![image](https://github.com/YuriXbr/LoLConfigManager/assets/56856513/5f451f6c-eb86-4a4c-8ac5-0a109a35bb6f)
 
-6. Escreva no CMD "cd (cole o caminho da pasta)".
-7. Escreva "npm i" e espere as dependencias serem baixadas.
+3. Escreva no CMD "cd (cole o caminho da pasta)".
+4. Escreva "npm i" e espere as dependencias serem baixadas.
 
 ![image](https://github.com/YuriXbr/LoLConfigManager/assets/56856513/170cf6c4-30a6-49d9-897d-0c0e2e3ba7d5)
 
+<br>
+<br>
 
+ ✔ Pronto, basta executar pelo start.bat.
 
- Pronto, basta executar pelo start.bat.
+<br>
 
 ## REPORTAR PROBLEMAS:
 
 1. Abra a pasta de logs, e envie o conteudo dele para mim pelo issues no aqui mesmo, ou pelo twitter/discord a baixo.
 
+<br>
+
 ## CAUSA BAN?
 
 **Não!** Esse programa não interage diretamente com o processo do league of legends nem gera nenhum tipo de vantagem, todas informações que o programa usa são de fácil acesso ao usuário de forma manual e estão disponíveis sem nenhum tipo engenharia reversa.
+
+<br>
 
 ## OBSERVAÇÔES:
 
@@ -58,16 +74,18 @@ Agora tente executar o arquivo dependencies.bat, e então abrir o programa pelo 
 
 ***Este aplicativo é exclusivo para Windows***
 
+<br>
+
 ## LICENÇA & DIREITOS AUTORAIS:
 
 Este programa pode ser modificado livremente, mas solicito humildemente  para que mantenham os créditos originais. Não me responsabilizo por versões modificadas.
 
-
+<br>
+<br>
 
 ## SOLUÇÃO DE PROBLEMAS:
 # Caso o aplcativo abra e feche instantaneamente, siga o seguinte:
 
-1. Abra o CMD como administrador
-2. Leve ele ao caminho da pasta, como feito no momento da instalação, usando o "CD (caminho da pasta)"
-3. Escreva "node ." Lembre-se de tirar as aspas, mas manter o . atente-se também que tem um espaço entre o texto e o ponto.
-4. Pegue o Log de erro, e informe para mim por qualquer um dos meios de contato.
+1. Vá na pasta do programa, e procure pela pasta log.
+2. Crie um ticket na aba de Issues do Github, ou envie por outro meio, o arquivo ou tudo que tiver dentro do arquivo com a data mais recente.
+3. Espere pela analise.
