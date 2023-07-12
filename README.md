@@ -70,7 +70,7 @@ Olá invocador, conheça o **configManager**, um aplicativo rodando em node.js c
 
 ## OBSERVAÇÔES:
 
-**Duvidas ou problemas?** Me contate via discord (*yuri.js*), twitter (*@incertamentyuri*) ou diretamente pelo GitHub no issues.
+**Duvidas ou problemas?** Me contate via discord (*yuri.js*), twitter (Caso você tenha vindo por lá) ou diretamente pelo GitHub no issues.
 
 ***Este aplicativo é exclusivo para Windows***
 
