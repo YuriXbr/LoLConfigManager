@@ -9,24 +9,24 @@ const figlet = require('figlet');
 const configFolderPath = 'C:/ConfigManager';
 const infoFilePath = 'C:/ConfigManager/info.json';
 let outputMessage = '';
+const log = require('./utils/logger');
+ 
+process.on("unhandledRejection", e => { 
+  log.writeError('unhandledRejection',`INTERNAL`, e, Error)
+  outputMessage = e;
+ }) 
+process.on("uncaughtException", e => { 
+  log.writeError('uncaughtException',`INTERNAL`, e, Error)
+  outputMessage = e;
+ })  
+process.on("uncaughtExceptionMonitor", e => { 
+  log.writeError('uncaughtExceptionMonitor',`INTERNAL`, e, Error)
+  outputMessage = e;
+ })
 
 exec('node -v', (error, stdout, stderr) => {
   if (error || stderr) {
-    console.log('O Node.js não está instalado. Instalando...');
-
-    // Define o nome do instalador com base no sistema operacional
-    const installerName = process.platform === 'win32' ? 'node.msi' : 'node.sh';
-    const installerPath = path.join(__dirname, '_CommonRedist', installerName);
-
-    // Executa o instalador
-    exec(`"${installerPath}"`, (error) => {
-      if (error) {
-        console.clear();
-        console.error('Ocorreu um erro ao instalar o Node.js, tente entrar em https://nodejs.org/pt-br/download e instalar manualmente:', error);
-        return;
-      }
-      if (debug) console.log('O Node.js foi instalado com sucesso!');
-    });
+    return console.log('O Node.js não está instalado! Entre em https://nodejs.org/pt-br e instale a versão LTS (marque a caixinha do chocolatey)');
   } 
 });
 
@@ -114,8 +114,7 @@ async function showMenu() {
   [2] ResetUI/UX                          |  (Corrigir erros de interface do Client)
   [3] Ult Charm                           |  (Mostrar emote ou maestria ao Ultar)
   [4] Abaixar prioridade                  |  (Trocar prioridade do Client)
-  [5] Reiniciar o explorer                |  (Desbugar a barra de tarefas)
-  `));
+  `)+ chalk.redBright('[5] Reiniciar o explorer (Ainda não implementado)'));
   await console.log(outputMessage || (chalk.cyanBright('OUTPUT: \n') + 'Sem comandos anteriores.'));
   const option = await askQuestion('\n ________________________________________________________________\n » Por favor, digite o número da opção que deseja selecionar: ');
 

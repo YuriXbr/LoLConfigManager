@@ -1,0 +1,2 @@
+Em caso de erro, envio o log mais recente para:
+ https://github.com/YuriXbr/LoLConfigManager/
