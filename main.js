@@ -1,38 +1,65 @@
-const { execSync, spawn, exec } = require('child_process');
-const package = require('./package.json');
 const fs = require('fs');
 const { writeFile } = require('fs').promises;
-const path = require('path');
+const { execSync, spawn, exec } = require('child_process');
 const readline = require('readline');
-const chalk = require('chalk');
 const figlet = require('figlet');
+const path = require('path');
+const chalk = require('chalk');
 const configFolderPath = 'C:/ConfigManager';
 const infoFilePath = 'C:/ConfigManager/info.json';
-let outputMessage = '';
+const package = require('./package.json');
 const log = require('./utils/logger');
- 
+const _locales = require('./utils/messages')
+const fetch = require('node-fetch');
+let outputMessage = '';
+let _lang = Intl.DateTimeFormat().resolvedOptions().locale;
+
+if(_lang = "pt-BR") locale = _locales.ptBR; else locale = _locales.enUS
+
 process.on("unhandledRejection", e => { 
+  console.clear()
   log.writeError('unhandledRejection',`INTERNAL`, e, Error)
-  outputMessage = e;
  }) 
 process.on("uncaughtException", e => { 
+  console.clear()
   log.writeError('uncaughtException',`INTERNAL`, e, Error)
-  outputMessage = e;
  })  
 process.on("uncaughtExceptionMonitor", e => { 
+  console.clear()
   log.writeError('uncaughtExceptionMonitor',`INTERNAL`, e, Error)
-  outputMessage = e;
  })
 
 exec('node -v', (error, stdout, stderr) => {
   if (error || stderr) {
-    return console.log('O Node.js não está instalado! Entre em https://nodejs.org/pt-br e instale a versão LTS (marque a caixinha do chocolatey)');
+    return console.log(locale.nodeNotExist);
   } 
 });
 
-async function readFile(filePath) {
-  return fs.promises.readFile(filePath, 'utf8');
+async function checkLatestVersion() {
+  try {
+    const response = await fetch(`https://api.github.com/repos/YuriXbr/LoLConfigManager/releases/latest`);
+    if (response.ok) {
+      const data = await response.json();
+      let latestVersion = data.tag_name;
+      const currentVersion = package.version; // Substitua pela sua versão atual
+      console.log(latestVersion  + currentVersion);
+      if (latestVersion !== currentVersion) {
+        isUpdated = false;
+      } else {
+        isUpdated = true;
+      }
+    } else {
+      outputMessage = 'Não foi possível obter as informações do repositório.';
+    }
+  } catch (error) {
+    outputMessage = 'Ocorreu um erro ao verificar a versão, verifique os logs';
+    log.writeError('checkLatestVersion',`INTERNAL`, e, Error)
+  }
+  return isUpdated, outputMessage;
 }
+
+
+
 
 // Verifica se a pasta ConfigManager existe, senão cria
 if (!fs.existsSync(configFolderPath)) {
@@ -51,7 +78,7 @@ if (!fs.existsSync(infoFilePath) || fs.readFileSync(infoFilePath, 'utf8').trim()
 
 // Carrega as informações do arquivo info.json
 let info = JSON.parse(fs.readFileSync(infoFilePath, 'utf8'));
-log.writeSilent('Informações carregadas' + JSON.stringify(info))
+log.writeSilent(locale.loadedInfo + JSON.stringify(info))
 
 // Cria a interface de leitura
 const rl = readline.createInterface({
@@ -68,7 +95,7 @@ async function findPersistedSettings() {
   if (persistedSettingsFile) {
     return path.join(configPath, persistedSettingsFile);
   } else {
-    throw new Error('Arquivo PersistedSettings.json não encontrado!');
+    throw new Error(locale.configFileNotFound);
   }
 }
 // Função para fazer uma pergunta ao usuário
@@ -85,38 +112,44 @@ function askQuestion(question, options = []) {
   });
 }
 
+
 // Função para exibir o menu e processar a opção selecionada
 async function showMenu() {
   process.stdout.write('\x1Bc');
-  console.log(chalk.green.bold(figlet.textSync('ConfigManager.', { horizontalLayout: 'full' })));
-  console.log(chalk.greenBright.bold(`Node: ${process.version} `+chalk.white.bold(`| APP: ${package.version} | FS: ${package.dependencies.fs} | PATH: ${package.dependencies.path} | FIGLET: ${package.dependencies.figlet} | ChildProcess: ${package.dependencies.child_process}`)))
+  await checkLatestVersion();
+
+
+  console.log(chalk.green.bold(figlet.textSync(locale.appName, { horizontalLayout: 'full' })));
 
   if (!info.LeaguePath) {
-    const leaguePath = await askQuestion('O LeaguePath ainda não está configurado. Por favor, digite o caminho completo para a pasta "Config" do League of Legends: ');
+    const leaguePath = await askQuestion(locale.missingLeaguePathConfig);
     if (leaguePath) {
       info.LeaguePath = leaguePath.trim();
       updateInfoFile();
     } else {
-      outputMessage = (chalk.cyanBright('OUTPUT: \n') + chalk.redBright('O caminho do LeaguePath não pode estar vazio!'));
+      outputMessage = (chalk.redBright(locale.invalidLeaguePathDir));
       showMenu();
       return;
     }
   }
   
-  console.log(`\n\nBEM VINDO ao ConfigManager! este foi criado com o intuito de te ajudar a fazer algumas configurações\nque não existem por padrão no lol, e que normalmente são trabalhosas de ajustar, foi criado por mo-\ntivação pessoal, já que a preguiça reina em mim (dev), fique a vontade para divulgar ou modificar \nEssa aplicação, mas por favor dê os créditos a mim, me ajudará muito. Não posso garantir até \nquando darei suporte a esse programa, já que ele foi criado apenas porque estava com tempo.`)
-  console.log('                  [Não afiliado com a Riot Games ou ao League of Legends.]')
-  console.log(`
-  Funcionalidades:\n` +
-  chalk.yellow('  [X] Reconfigurar, solução de problemas e avisos\n  [CTRL+C] Sair')+
-  chalk.greenBright.bold(`  
-  [0] Abrir pasta de configuração do LoL  |  (Atualmente: ${info.LeaguePath ? chalk.yellowBright(info.LeaguePath) : chalk.redBright.bold('[!] Não configurado!')})
-  [1] Trava de Configurações              |  (Trava/Destrava arquivos de configuração. Atualmente: ${info.ConfigLocked ? chalk.redBright('travado') : chalk.blueBright('destravado')})
-  [2] ResetUI/UX                          |  (Corrigir erros de interface do Client)
-  [3] Ult Charm                           |  (Mostrar emote ou maestria ao Ultar)
-  [4] Abaixar prioridade                  |  (Trocar prioridade do Client)
-  `)+ chalk.redBright('[5] Reiniciar o explorer (Ainda não implementado)'));
-  await console.log(outputMessage || (chalk.cyanBright('OUTPUT: \n') + 'Sem comandos anteriores.'));
-  const option = await askQuestion('\n ________________________________________________________________\n » Por favor, digite o número da opção que deseja selecionar: ');
+
+  console.log(locale.notAffiliated);
+  console.log(chalk.yellow.bold(`  App Version: `+ `${isUpdated ? chalk.greenBright.bold(locale.updatedVersion + ` (${package.version})`) : chalk.redBright.bold(locale.newVersion)}`));
+  console.log(locale.functions);
+
+  console.log(chalk.greenBright.bold(locale.menuOp0 + `${info.LeaguePath ? chalk.yellowBright(info.LeaguePath) : chalk.redBright.bold(locale.menuNotConfigured)})`));
+  console.log(chalk.greenBright.bold(locale.menuOp1 + `${info.ConfigLocked ? chalk.redBright(locale.menuLocked) : chalk.blueBright(locale.menuUnlocked)})`));
+  console.log(chalk.greenBright.bold(locale.menuOp2));
+  console.log(chalk.greenBright.bold(locale.menuOp3));
+  console.log(chalk.greenBright.bold(locale.menuOp4));
+  console.log(chalk.redBright.bold(locale.menuOp5));
+  console.log(chalk.yellow(locale.menuOpX));
+  console.log(chalk.yellow(locale.menuOpC))
+  console.log(chalk.cyanBright(locale.menuOutput))
+  await console.log(outputMessage || locale.menuNoCommands);
+
+  const option = await askQuestion('\n ________________________________________________________________\n'+locale.askQuestionSelectAOption);
 
   if (option.toUpperCase() === 'X') {
     await reconfigureOptions();
@@ -125,11 +158,12 @@ async function showMenu() {
   }
 }
 
+
 async function reconfigureOptions() {
   console.clear();
   const fieldOptions = [
-    { field: 'LeaguePath', description: 'Caminho para a pasta "Config" do League of Legends' },
-    { field: 'ConfigLocked', description: 'Trava de configurações' },
+    { field: 'LeaguePath', description:  locale.reconfigureOptionsConfigPath},
+    { field: 'ConfigLocked', description: locale.reconfigureOptionsConfigLocked},
   ];
 
   info.Mastery = 0;
@@ -139,7 +173,7 @@ async function reconfigureOptions() {
   const persistedSettings = JSON.parse(persistedSettingsData);
   const gameEventsSection = persistedSettings.files.find(file => file.name === 'Input.ini').sections.find(section => section.name === 'GameEvents');
 
-  console.log(chalk.yellow.bold('\n\nReconfigurar Opções:\n\n'));
+  console.log(chalk.yellow.bold(locale.reconfigureOptionsLabel));
   const filteredMasteryEmote = gameEventsSection.settings.filter(setting => {
     return setting.name.includes("evtRadialEmotePlaySlot") && setting.value.includes("[r]");
   });
@@ -154,9 +188,9 @@ async function reconfigureOptions() {
     info.Mastery = 1;
   });
 
-if (info.Mastery == 0) _m = 'Nenhum'
-if (info.Mastery == 1) _m = 'Ultmate'
-if (info.Mastery == 2) _m = 'Emote'
+if (info.Mastery == 0) _m = locale.infoMasteryNone;
+if (info.Mastery == 1) _m = locale.infoMasteryUltimate
+if (info.Mastery == 2) _m = locale.infoMasteryEmote
   data = [ 
     {LoLPath: `${info.LeaguePath}`},
     {Locked:  info.ConfigLocked},
@@ -167,11 +201,11 @@ if (info.Mastery == 2) _m = 'Emote'
   fieldOptions.forEach((option, index) => {
     console.log(`[${index + 1}] ${option.description}`);
   });
-  console.log(`[${fieldOptions.length + 1}] Cancelar`);
-  console.log(chalk.redBright.bold('\n\n Caso não resolva, garanta que o aplicativo tem acesso a pasta C:/ConfigManager, caso o problema persista,\n tente deleta-la e reinicie o programa, se não adiantar abra o arquivo Dependencies.bat. garanta que \n você possui o node.js instalado e que possui o League Of Legends instalado,\n já tendo entrado em 1 partida ao menos 1 vez. Se persistir contate a mim por onde você conseguiu esse programa.'))
-  console.log(chalk.blueBright.bold('\n ConfigManager não é afiliado a Riot Games e nem modifica ou interage internamente com dll ou processos do jogo, \n apenas modifica arquivos de configuração que o próprio usuário poderia modificar manualmente e não da ban. \n isso não é um script(hack) e nem possui tecnologia para tal, em caso de duvidas me contate.'));
+  console.log(`[${fieldOptions.length + 1}] `+ locale.cancel);
+  console.log(chalk.redBright.bold(locale.redWarning))
+  console.log(chalk.blueBright.bold(locale.blueWarning));
 
-  const option = await askQuestion('\n » Por favor, digite o número da opção que deseja reconfigurar: ');
+  const option = await askQuestion(locale.reconfigureOptionsQuestion);
 
   const selectedIndex = parseInt(option) - 1;
   if (selectedIndex >= 0 && selectedIndex < fieldOptions.length) {
@@ -179,20 +213,20 @@ if (info.Mastery == 2) _m = 'Emote'
     let newValue;
 
      if (selectedOption.field === 'ConfigLocked') {
-      const lockOption = await askQuestion('\n » Digite o novo valor para a Trava de Configurações (true/false): ');
+      const lockOption = await askQuestion(locale.reconfigureOptionsNewValueConfigLocked);
       newValue = lockOption.trim().toLowerCase() === 'true';
       toggleConfigLock(newValue); // Chama a função toggleConfigLock() passando o novo valor como argumento
     } else {
-      newValue = await askQuestion(`\n » Digite o novo valor para "${selectedOption.description}": `);
+      newValue = await askQuestion(`${locale.reconfigureOptionsNewValueTo} "${selectedOption.description}": `);
     }
 
     info[selectedOption.field] = newValue;
-    outputMessage = (chalk.cyanBright('OUTPUT: \n') + `Opção "${selectedOption.description}" reconfigurada com sucesso.`);
+    outputMessage = (`${locale.reconfigureOptionsOption} "${selectedOption.description}" ${locale.reconfigureOptionsSuccess}`);
     updateInfoFile();
   } else if (selectedIndex === fieldOptions.length) {
-    outputMessage = (chalk.cyanBright('OUTPUT: \n') + 'Reconfiguração cancelada.');
+    outputMessage = (locale.reconfigureOptionsCancel);
   } else {
-    outputMessage = (chalk.cyanBright('OUTPUT: \n') + 'Opção inválida! Por favor, selecione uma opção válida.');
+    outputMessage = (locale.invalidOption);
   }
 
   showMenu();
@@ -221,7 +255,7 @@ async function processMenuOption(option) {
       lowerPriority();
       break;
     default:
-      outputMessage = (chalk.cyanBright('OUTPUT: \n') + 'Opção inválida! Por favor, selecione uma opção válida.');
+      outputMessage = (locale.invalidOption);
       showMenu();
       break;
   }
@@ -245,37 +279,37 @@ async function lowerPriority() {
         if(selectedPriority == 6) return showMenu();
 
         if(selectedPriority == 0) {
-          outputMessage = (chalk.cyanBright('OUTPUT: \n') + `Processo do LeagueUxRender colocado em tempo real.`);
+          outputMessage = (`Processo do LeagueUxRender colocado em tempo real.`);
           execSync(`wmic process where "name='LeagueClientUxRender.exe'" CALL setpriority 256`);
           showMenu();
           return;
         } else if(selectedPriority == 1) {
-          outputMessage = (chalk.cyanBright('OUTPUT: \n') + `Processo do LeagueUxRender colocado em Alto.`);
+          outputMessage = (`Processo do LeagueUxRender colocado em Alto.`);
           execSync(`wmic process where "name='LeagueClientUxRender.exe'" CALL setpriority 128`);
           showMenu();
           return;
         } else if(selectedPriority == 2) {
-          outputMessage = (chalk.cyanBright('OUTPUT: \n') + `Processo do LeagueUxRender colocado em Acima do normal.`);
+          outputMessage = (`Processo do LeagueUxRender colocado em Acima do normal.`);
           execSync(`wmic process where "name='LeagueClientUxRender.exe'" CALL setpriority 32768`);
           showMenu();
           return;
         } else if(selectedPriority == 3) {
-          outputMessage = (chalk.cyanBright('OUTPUT: \n') + `Processo do LeagueUxRender de volta a prioridade normal.`);
+          outputMessage = (`Processo do LeagueUxRender de volta a prioridade normal.`);
           execSync(`wmic process where "name='LeagueClientUxRender.exe'" CALL setpriority 32`);
           showMenu();
           return;
         } else if(selectedPriority == 4) {
-          outputMessage = (chalk.cyanBright('OUTPUT: \n') + `Processo do LeagueUxRender colocado abaixo do normal.`);
+          outputMessage = (`Processo do LeagueUxRender colocado abaixo do normal.`);
           execSync(`wmic process where "name='LeagueClientUxRender.exe'" CALL setpriority 16384`);
           showMenu();
           return;
         } else if(selectedPriority == 5) {
-          outputMessage = (chalk.cyanBright('OUTPUT: \n') + `Processo do LeagueUxRender colocado em baixa prioridade`);
+          outputMessage = (`Processo do LeagueUxRender colocado em baixa prioridade`);
           execSync(`wmic process where "name='LeagueClientUxRender.exe'" CALL setpriority 64`);
           showMenu();
           return;
         } else {
-          outputMessage = (chalk.cyanBright('OUTPUT: \n') + 'Opção inválida! Por favor, selecione uma opção válida.');
+          outputMessage = ('Opção inválida! Por favor, selecione uma opção válida.');
           showMenu();
         }
 }
@@ -297,13 +331,13 @@ function openLeaguePath() {
     try {
       const { exec } = require('child_process');
       exec(command);
-      outputMessage = (chalk.cyanBright('OUTPUT: \n') + `Pasta do LeaguePath aberta com sucesso!`);
+      outputMessage = (`Pasta do LeaguePath aberta com sucesso!`);
     } catch (error) {
-      outputMessage = (chalk.cyanBright('OUTPUT: \n') + chalk.redBright(`[ERROR] Ocorreu um erro ao abrir a pasta do LeaguePath: ${error.message}`));
+      outputMessage = (chalk.redBright(`[ERROR] Ocorreu um erro ao abrir a pasta do LeaguePath: ${error.message}`));
     }
     showMenu();
   } else {
-    outputMessage = (chalk.cyanBright('OUTPUT: \n') + chalk.yellowBright.bold('[ALERTA] O LeaguePath ainda não está configurado! Por favor, configure-o primeiro.'));
+    outputMessage = (chalk.yellowBright.bold('[ALERTA] O LeaguePath ainda não está configurado! Por favor, configure-o primeiro.'));
     showMenu();
   }
 }
@@ -322,17 +356,17 @@ function toggleConfigLock() {
 // Função para travar as configurações
 function lockConfig() {
   if (info.ConfigLocked) {
-    outputMessage = (chalk.cyanBright('OUTPUT: \n') + 'As configurações já estão travadas!');
+    outputMessage = ('As configurações já estão travadas!');
     showMenu();
   } else {
     const persistedSettingsPath = path.join(info.LeaguePath, 'PersistedSettings.json');
     try {
       fs.chmodSync(persistedSettingsPath, '0444');
       info.ConfigLocked = true;
-      outputMessage = (chalk.cyanBright('OUTPUT: \n') + 'Trava de configurações ativa. As configurações foram destravadas com sucesso!');
+      outputMessage = ('Trava de configurações ativa. As configurações foram destravadas com sucesso!');
       updateInfoFile();
     } catch (error) {
-      outputMessage = (chalk.cyanBright('OUTPUT: \n') + chalk.redBright(`[ERROR] Ocorreu um erro ao travar as configurações: ${error}`));
+      outputMessage = (chalk.redBright(`[ERROR] Ocorreu um erro ao travar as configurações: ${error}`));
     } finally {
       showMenu();
     }
@@ -342,17 +376,17 @@ function lockConfig() {
 // Função para destravar as configurações
 function unlockConfig() {
   if (!info.ConfigLocked) {
-    outputMessage = chalk.cyanBright('OUTPUT: \n') + 'As configurações já estão destravadas!';
+    outputMessage = ('As configurações já estão destravadas!');
     showMenu();
   } else {
     const persistedSettingsPath = path.join(info.LeaguePath, 'PersistedSettings.json');
     try {
       fs.chmodSync(persistedSettingsPath, '0666');
       info.ConfigLocked = false;
-      outputMessage = (chalk.cyanBright('OUTPUT: \n') + 'Trava de configurações desativada. As configurações foram destravadas com sucesso!');
+      outputMessage = ('Trava de configurações desativada. As configurações foram destravadas com sucesso!');
       updateInfoFile();
     } catch (error) {
-      outputMessage = (chalk.cyanBright('OUTPUT: \n') + chalk.redBright(`[ERROR] Ocorreu um erro ao destravar as configurações: ${error}`));
+      outputMessage = (chalk.redBright(`[ERROR] Ocorreu um erro ao destravar as configurações: ${error}`));
     } finally {
       showMenu();
     }
@@ -361,7 +395,7 @@ function unlockConfig() {
 
 // Função para reiniciar os processos relacionados ao League of Legends
 function resetUX() {
-  outputMessage = (chalk.cyanBright('OUTPUT: \n') + 'Reiniciando interface do League of Legends...');
+  outputMessage = ('Reiniciando interface do League of Legends...');
 
   // Lista de processos a serem reiniciados
   const processes = [
@@ -397,7 +431,7 @@ async function configureMastery() {
 
     const isReadOnly = await isFileReadOnly(persistedSettingsPath);
     if (isReadOnly) {
-      outputMessage = (chalk.cyanBright('OUTPUT: \n') + 'O arquivo PersistedSettings.json está em modo somente leitura. Desbloqueie as configurações antes de usar esta função.');
+      outputMessage = ('O arquivo PersistedSettings.json está em modo somente leitura. Desbloqueie as configurações antes de usar esta função.');
       showMenu();
       return;
     }
@@ -473,13 +507,13 @@ async function configureMastery() {
 
         } else if (selectedEmojiIndex === 9) {
 
-          outputMessage = (chalk.cyanBright('OUTPUT: \n') + 'Reconfiguração cancelada.');
+          outputMessage = ('Reconfiguração cancelada.');
           showMenu();
           return;
 
         } else {
 
-          outputMessage = (chalk.cyanBright('OUTPUT: \n') + 'Opção inválida! Por favor, selecione uma opção válida.');
+          outputMessage = ('Opção inválida! Por favor, selecione uma opção válida.');
           showMenu();
           return;
 
@@ -488,14 +522,14 @@ async function configureMastery() {
 
       await fs.promises.writeFile(persistedSettingsPath, JSON.stringify(persistedSettings, null, 2), 'utf-8');
 
-      outputMessage = (chalk.cyanBright('OUTPUT: \n') + `Opção "Bind de Maestria" reconfigurada com sucesso.`);
+      outputMessage = (`Opção "Bind de Maestria" reconfigurada com sucesso.`);
     } else if (selectedMasteryIndex === 3) {
-      outputMessage = (chalk.cyanBright('OUTPUT: \n') + 'Reconfiguração cancelada.');
+      outputMessage = ('Reconfiguração cancelada.');
     } else {
-      outputMessage = (chalk.cyanBright('OUTPUT: \n') + 'Opção inválida! Por favor, selecione uma opção válida.');
+      outputMessage = ('Opção inválida! Por favor, selecione uma opção válida.');
     }
   } catch (error) {
-    outputMessage = (chalk.cyanBright('OUTPUT: \n') + 'Erro ao processar o arquivo PersistedSettings.json. Certifique-se de que o LeaguePath esteja configurado corretamente. \n [ERRO]: ' + error);
+    outputMessage = ('Erro ao processar o arquivo PersistedSettings.json. Certifique-se de que o LeaguePath esteja configurado corretamente. \n [ERRO]: ' + error);
   }
 
   showMenu();
