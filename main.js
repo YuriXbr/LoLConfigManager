@@ -42,7 +42,7 @@ async function checkLatestVersion() {
       const data = await response.json();
       let latestVersion = data.tag_name;
       const currentVersion = package.version; // Substitua pela sua versão atual
-      console.log(latestVersion  + currentVersion);
+      //console.log(latestVersion  + currentVersion);
       if (latestVersion !== currentVersion) {
         isUpdated = false;
       } else {
