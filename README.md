@@ -3,7 +3,7 @@
 Olá invocador, conheça o **configManager**, um aplicativo rodando em node.js com o objetivo de te ajudar a corrigir **problemas de interface e salvar tempo**. 
 (Precisa do node.js instalado, exclusivo para Windows)
 
-![image](https://github.com/YuriXbr/LoLConfigManager/assets/56856513/409ffd24-dc97-4965-a498-29f1c4406650)
+![image](https://github.com/YuriXbr/LoLConfigManager/assets/56856513/31c8a545-77ee-42da-9cba-c1371e5c67c0)
 
 
 <br>
