@@ -14,7 +14,7 @@ const fetch = require('node-fetch');
 let outputMessage = '';
 let _lang = Intl.DateTimeFormat().resolvedOptions().locale;
 
-if(_lang = "pt-BR") locale = _locales.ptBR; else locale = _locales.enUS
+if(_lang = "pt-BR") locale = _locales.ptBR; else locale = _locales.ptBR // Eng loc not implemented
 
 process.on("unhandledRejection", e => { 
   console.clear()
@@ -42,20 +42,24 @@ async function checkLatestVersion() {
       const data = await response.json();
       let latestVersion = data.tag_name;
       const currentVersion = package.version; // Substitua pela sua versão atual
-      //console.log(latestVersion  + currentVersion);
+      console.log(latestVersion  + currentVersion);
       if (latestVersion !== currentVersion) {
         isUpdated = false;
+        return isUpdated;
       } else {
         isUpdated = true;
+        return isUpdated;
       }
     } else {
-      outputMessage = 'Não foi possível obter as informações do repositório.';
+      isUpdated = undefined;
+      return  isUpdated;
     }
   } catch (error) {
     outputMessage = 'Ocorreu um erro ao verificar a versão, verifique os logs';
+    isUpdated = false;
     log.writeError('checkLatestVersion',`INTERNAL`, e, Error)
+    return isUpdated, outputMessage;
   }
-  return isUpdated, outputMessage;
 }
 
 
@@ -135,7 +139,8 @@ async function showMenu() {
   
 
   console.log(locale.notAffiliated);
-  console.log(chalk.yellow.bold(`  App Version: `+ `${isUpdated ? chalk.greenBright.bold(locale.updatedVersion + ` (${package.version})`) : chalk.redBright.bold(locale.newVersion)}`));
+  if (isUpdated != undefined) console.log(chalk.yellow.bold(`  App Version: ${package.version} `+ `${isUpdated ? chalk.greenBright.bold(locale.updatedVersion + ` (${package.version})`) : chalk.redBright.bold(locale.newVersion)}`));
+  if (isUpdated == undefined) console.log(chalk.yellow.bold(`  App Version: ${package.version} `+ chalk.redBright.bold(locale.gitHubRateLimit)))
   console.log(locale.functions);
 
   console.log(chalk.greenBright.bold(locale.menuOp0 + `${info.LeaguePath ? chalk.yellowBright(info.LeaguePath) : chalk.redBright.bold(locale.menuNotConfigured)})`));
@@ -143,7 +148,7 @@ async function showMenu() {
   console.log(chalk.greenBright.bold(locale.menuOp2));
   console.log(chalk.greenBright.bold(locale.menuOp3));
   console.log(chalk.greenBright.bold(locale.menuOp4));
-  console.log(chalk.redBright.bold(locale.menuOp5));
+  console.log(chalk.greenBright.bold(locale.menuOp5));
   console.log(chalk.yellow(locale.menuOpX));
   console.log(chalk.yellow(locale.menuOpC))
   console.log(chalk.cyanBright(locale.menuOutput))
@@ -232,7 +237,12 @@ if (info.Mastery == 2) _m = locale.infoMasteryEmote
   showMenu();
 }
 
-
+async function resetExplorer() {
+  await execSync(`taskkill /F /IM explorer.exe`);
+  exec(`start explorer.exe`)
+  outputMessage = (locale.restartedExplorer);
+  showMenu();
+}
 
 // Função para processar a opção selecionada no menu
 async function processMenuOption(option) {
@@ -242,17 +252,18 @@ async function processMenuOption(option) {
       break;
     case '1':
       toggleConfigLock();
-      showMenu();
       break;
     case '2':
       resetUX();
-      showMenu();
       break;
     case '3':
       configureMastery();
       break;
     case '4':
       lowerPriority();
+      break;
+    case '5':
+      resetExplorer();
       break;
     default:
       outputMessage = (locale.invalidOption);
@@ -264,52 +275,52 @@ async function processMenuOption(option) {
 // Função para abrir a pasta do LeaguePath no explorador de arquivos do usuário
 
 async function lowerPriority() {
-        console.log(chalk.yellow.bold('\nPrioridade do processo:'));
-        console.log('  [1] Tempo real      (Mais alto)');
-        console.log('  [2] Alto            (Alto)');
-        console.log('  [3] Acima do normal');
-        console.log(`  [4] NORMAL          (Padrão)`);
-        console.log(`  [5] Abaixo do normal`);
-        console.log(`  [6] Baixo           (Menor possivel)`);
-        console.log(` [7/X] Sair`);
+        console.log(chalk.yellow.bold(locale.lowerPriorityLabel));
+        console.log(locale.lowerPriorityRealTime);
+        console.log(locale.lowerPriorityHigh);
+        console.log(locale.lowerPriorityAboveNormal);
+        console.log(locale.lowerPriorityNormal);
+        console.log(locale.lowerPriorityBelowNormal);
+        console.log(locale.lowerPriorityLower);
+        console.log(locale.lowerPriorityExit);
 
-        const priority = await askQuestion('\n » Por favor, digite o número da opção de prioridade: ');
+        const priority = await askQuestion(locale.lowerPriorityQuestion);
         if (priority.toLowerCase() == 'x') return showMenu();
         const selectedPriority = parseInt(priority) - 1;
         if(selectedPriority == 6) return showMenu();
 
         if(selectedPriority == 0) {
-          outputMessage = (`Processo do LeagueUxRender colocado em tempo real.`);
+          outputMessage = (locale.lowerPriorityORealTime);
           execSync(`wmic process where "name='LeagueClientUxRender.exe'" CALL setpriority 256`);
           showMenu();
           return;
         } else if(selectedPriority == 1) {
-          outputMessage = (`Processo do LeagueUxRender colocado em Alto.`);
+          outputMessage = (locale.lowerPriorityOHigh);
           execSync(`wmic process where "name='LeagueClientUxRender.exe'" CALL setpriority 128`);
           showMenu();
           return;
         } else if(selectedPriority == 2) {
-          outputMessage = (`Processo do LeagueUxRender colocado em Acima do normal.`);
+          outputMessage = (locale.lowerPriorityOAboveNormal);
           execSync(`wmic process where "name='LeagueClientUxRender.exe'" CALL setpriority 32768`);
           showMenu();
           return;
         } else if(selectedPriority == 3) {
-          outputMessage = (`Processo do LeagueUxRender de volta a prioridade normal.`);
+          outputMessage = (locale.lowerPriorityONormal);
           execSync(`wmic process where "name='LeagueClientUxRender.exe'" CALL setpriority 32`);
           showMenu();
           return;
         } else if(selectedPriority == 4) {
-          outputMessage = (`Processo do LeagueUxRender colocado abaixo do normal.`);
+          outputMessage = (locale.lowerPriorityOBelowNormal);
           execSync(`wmic process where "name='LeagueClientUxRender.exe'" CALL setpriority 16384`);
           showMenu();
           return;
         } else if(selectedPriority == 5) {
-          outputMessage = (`Processo do LeagueUxRender colocado em baixa prioridade`);
+          outputMessage = (locale.lowerPriorityOLower);
           execSync(`wmic process where "name='LeagueClientUxRender.exe'" CALL setpriority 64`);
           showMenu();
           return;
         } else {
-          outputMessage = ('Opção inválida! Por favor, selecione uma opção válida.');
+          outputMessage = (locale.invalidOption);
           showMenu();
         }
 }
@@ -329,15 +340,15 @@ function openLeaguePath() {
     }
 
     try {
-      const { exec } = require('child_process');
+      //const { exec } = require('child_process');
       exec(command);
-      outputMessage = (`Pasta do LeaguePath aberta com sucesso!`);
+      outputMessage = (locale.openLeaguePathSuccess);
     } catch (error) {
-      outputMessage = (chalk.redBright(`[ERROR] Ocorreu um erro ao abrir a pasta do LeaguePath: ${error.message}`));
+      outputMessage = (chalk.redBright(locale.openLeaguePathError +`${error.message}`));
     }
     showMenu();
   } else {
-    outputMessage = (chalk.yellowBright.bold('[ALERTA] O LeaguePath ainda não está configurado! Por favor, configure-o primeiro.'));
+    outputMessage = (chalk.yellowBright.bold(locale.openLeaguePathNotConfigured));
     showMenu();
   }
 }
