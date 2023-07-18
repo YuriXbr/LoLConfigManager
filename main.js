@@ -41,8 +41,7 @@ async function checkLatestVersion() {
     if (response.ok) {
       const data = await response.json();
       let latestVersion = data.tag_name;
-      const currentVersion = package.version; // Substitua pela sua versão atual
-      console.log(latestVersion  + currentVersion);
+      const currentVersion = package.version;
       if (latestVersion !== currentVersion) {
         isUpdated = false;
         return isUpdated;
@@ -139,8 +138,8 @@ async function showMenu() {
   
 
   console.log(locale.notAffiliated);
-  if (isUpdated != undefined) console.log(chalk.yellow.bold(`  App Version: ${package.version} `+ `${isUpdated ? chalk.greenBright.bold(locale.updatedVersion + ` (${package.version})`) : chalk.redBright.bold(locale.newVersion)}`));
-  if (isUpdated == undefined) console.log(chalk.yellow.bold(`  App Version: ${package.version} `+ chalk.redBright.bold(locale.gitHubRateLimit)))
+  if (isUpdated != undefined) console.log(chalk.yellow.bold(`  App Version: `+ `${isUpdated ? chalk.greenBright.bold(locale.updatedVersion + ` (${package.version})`) : chalk.redBright.bold(`(${package.version}) `+ locale.newVersion)}`));
+  if (isUpdated == undefined) console.log(chalk.yellow.bold(`  App Version: `+ chalk.redBright.bold(locale.gitHubRateLimit)))
   console.log(locale.functions);
 
   console.log(chalk.greenBright.bold(locale.menuOp0 + `${info.LeaguePath ? chalk.yellowBright(info.LeaguePath) : chalk.redBright.bold(locale.menuNotConfigured)})`));
