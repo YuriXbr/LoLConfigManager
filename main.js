@@ -142,7 +142,7 @@ async function showMenu() {
   if (isUpdated == undefined) console.log(chalk.yellow.bold(`  App Version: `+ chalk.redBright.bold(locale.gitHubRateLimit)))
   console.log(locale.functions);
 
-  console.log(chalk.greenBright.bold(locale.menuOp0 + `${info.LeaguePath ? chalk.yellowBright(info.LeaguePath) : chalk.redBright.bold(locale.menuNotConfigured)})`));
+  console.log(chalk.greenBright.bold(locale.menuOp0 + ` ${info.LeaguePath ? chalk.yellowBright(info.LeaguePath) : chalk.redBright.bold(locale.menuNotConfigured)})`));
   console.log(chalk.greenBright.bold(locale.menuOp1 + `${info.ConfigLocked ? chalk.redBright(locale.menuLocked) : chalk.blueBright(locale.menuUnlocked)})`));
   console.log(chalk.greenBright.bold(locale.menuOp2));
   console.log(chalk.greenBright.bold(locale.menuOp3));
